@@ -1,0 +1,8 @@
+{% load static %}
+
+<div class="sidebar-widget bg-white rounded tags p-4 mb-3">
+	  <h5 class="mb-4">Categories</h5>
+    {% for cat in categories %}
+        <a href="{% url 'blog:category' categoryName=cat.slug %}">{{ cat }}</a>
+    {% endfor %}
+</div>

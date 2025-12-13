@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="{% static 'plugins/slick-carousel/slick/slick.css' %}">
 	<link rel="stylesheet" href="{% static 'plugins/slick-carousel/slick/slick-theme.css' %}">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'summernote/summernote-bs4.min.css' %}">
 </head>
 <body>
 	<header class="navigation">
@@ -30,8 +31,11 @@
 					</div>
 					<div class="col-lg-10 col-md-8 text-center text-lg-right text-md-right">
 						<div class="header-top-info">
-							<a href="tel:+23-345-67890">Call Us : <span>+23-345-67890</span></a>
-							<a href="mailto:support@gmail.com" ><i class="fa fa-envelope mr-2"></i><span>support@gmail.com</span></a>
+							{% if user.is_authenticated %}
+								<i class="fa fa-user mr-2"></i> Welcome, {{ user.username }} | <a href="{% url 'accounts_app:logout' %}">Logout</a>
+							{% else %}
+								<a href="{% url 'accounts_app:login' %}"><span>Login</span></a>
+							{% endif %}
 						</div>
 					</div>
 				</div>
@@ -75,7 +79,7 @@
 						<h4 class="text-capitalize mb-4">Company</h4>
 
 						<ul class="list-unstyled footer-menu lh-35">
-							<li><a href="#">Terms & Conditions</a></li>
+							<li><a href="#">Terms &amp; Conditions</a></li>
 							<li><a href="#">Privacy Policy</a></li>
 							<li><a href="#">Support</a></li>
 							<li><a href="#">FAQ</a></li>
@@ -144,7 +148,6 @@
 	
 	{% comment %} </div> {% endcomment %}
 	<script src="{% static 'plugins/jquery/jquery.js' %}"></script>
-	<script src="{% static 'js/contact.js' %}"></script>
 	<script src="{% static 'plugins/bootstrap/js/popper.js' %}"></script>
 	<script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 	<script src="{% static 'plugins/magnific-popup/dist/jquery.magnific-popup.min.js' %}"></script>
@@ -154,6 +157,7 @@
 	<script src="{% static 'plugins/google-map/map.js' %}"></script>
 	{% comment %} <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>     {% endcomment %}
 	<script src="{% static 'js/script.js' %}"></script>
+	<script src="{% static 'summernote/summernote-bs4.min.js' %}"></script>
 </body>
 </html>
    

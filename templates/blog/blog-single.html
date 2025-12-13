@@ -52,7 +52,7 @@
 										<i class="ti-eye mr-2"></i>{{ post.counted_views }} Views
 									</span>
 									<span class="text-muted text-capitalize mr-3">
-										<i class="ti-comment mr-2"></i>{% commentCounter post.id %} Comments
+										<i class="ti-pencil-alt mr-2"></i><a href="{% url 'blog:author' post.author.username %}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
 									</span>
 									<span class="text-black text-capitalize mr-3">
 										<i class="ti-time mr-1"></i> {{ post.created_date|naturaltime }}
@@ -67,17 +67,12 @@
 									{{ post.content|linebreaks }}
 								</p>
 								<div class="tag-option mt-5 clearfix">
-									<ul class="float-left list-inline"> 
-										<li>Tags:</li> 
-										<li class="list-inline-item">
-											<a href="#" rel="tag">Advancher</a>
-										</li>
-										<li class="list-inline-item">
-											<a href="#" rel="tag">Landscape</a>
-										</li>
-										<li class="list-inline-item">
-											<a href="#" rel="tag">Travel</a>
-										</li>
+									<ul class="float-left list-inline">
+										{% for tag in post.tags.all %}
+											<li class="list-inline-item">
+												<a href="{% url 'blog:tag' tagName=tag.name %}" rel="tag">#{{ tag.name }}</a>
+											</li>
+										{% endfor %}
 									</ul>        
 									<ul class="float-right list-inline">
 										<li class="list-inline-item"> Share: </li>
@@ -195,12 +190,7 @@
 
 					{% latest_posts %}
 
-					<div class="sidebar-widget bg-white rounded tags p-4 mb-3">
-						<h5 class="mb-4">Tags</h5>
-						{% for tag in post.tags %}
-							<a href="#">{{ tag }}</a>
-						{% endfor %}
-					</div>
+					{% category %}
 				</div>
             </div>   
         </div>

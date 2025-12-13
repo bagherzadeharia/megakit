@@ -14,7 +14,7 @@ SECRET_KEY = "django-insecure-z!smqw*tytx^tbvar4a++a-(02c+((es7-5@9qhzlm7c3c9uc$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # INSTALLED_APPS = []
 
@@ -25,12 +25,15 @@ DATABASES = {
     }
 }
 
+# Sites Framework
+SITE_ID = 1
+
 STATIC_ROOT = BASE_DIR / "static_root"
 MEDIA_ROOT = BASE_DIR / "media"
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Related to 'debug_toolbar'
-# INTERNAL_IPS = ["127.0.0.1", "localhost", "0.0.0.0"]
+INTERNAL_IPS = ["127.0.0.1", "localhost", "0.0.0.0"]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"

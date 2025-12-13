@@ -3,10 +3,8 @@
 <div class="sidebar-widget card border-0 mb-3">
 	<img src="{% static 'images/blog/blog-author.jpg' %}" alt="" class="img-fluid">
 	<div class="card-body p-4 text-center">
-		<h5 class="mb-0 mt-4">Arther Conal</h5>
-		<p>Digital Marketer</p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt, dolore.</p>
-
+		<h5 class="mb-0 mt-4"><a href="{% url 'blog:author' authorUsername='arther_conal' %}">Arther Conal</a></h5>
+		<p>Chief Blog Editor</p>
 		<ul class="list-inline author-socials">
 			<li class="list-inline-item mr-3">
 				<a href="#"><i class="fab fa-instagra,-f text-muted"></i></a>

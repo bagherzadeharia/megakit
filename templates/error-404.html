@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="page-title bg-1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block text-center">
+                    <h1 class="text-capitalize mb-4 text-lg">Error 404</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <p class="mb-4">Whatever you're looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+                <a href="{% url 'website:index' %}" class="btn btn-main btn-round-full">Go Home</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

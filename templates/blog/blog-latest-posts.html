@@ -2,14 +2,22 @@
 {% load humanize %}
 
 <div class="sidebar-widget latest-post card border-0 p-4 mb-3">
-	<h5>Latest Posts</h5>
+    <h5>Latest Posts</h5>
+
     {% for post in posts %}
-        <div class="media border-bottom py-3">
-            <a href="#"><img class="mr-4" src="{{ post.image }}" alt=""></a>
+        <div class="media {% if not forloop.first %}border-top{% endif %} pt-3">
             <div class="media-body">
-                <h6 class="my-2"><a href="#">{{ post.title }}</a></h6>
-                <span class="text-sm text-muted">{{ post.published_date|naturaltime }}</span>
+                <h6 class="mt-0 mb-2">
+                    <a href="{{ post.get_absolute_url }}" class="text-dark">
+                        {{ post.title }}
+                    </a>
+                </h6>
+                <span class="text-sm text-muted">
+                    {{ post.published_date|naturaltime }}
+                </span>
             </div>
         </div>
+    {% empty %}
+        <p class="text-muted mb-0">No posts available yet.</p>
     {% endfor %}
 </div>

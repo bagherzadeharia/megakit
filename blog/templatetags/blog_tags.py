@@ -22,20 +22,12 @@ def latest_posts():
     posts = Post.objects.filter(
         status=1,
         published_date__lte=timezone.now(),
-    ).order_by('published_date')[:3]
+    ).order_by('-published_date')[:3]
     return {'posts': posts}
 
-@register.inclusion_tag('blog/blog-post-category.html')
+@register.inclusion_tag('blog/blog-categories.html')
 def category():
-    posts = Post.objects.filter(
-        status=1,
-        published_date__lte=timezone.now(),
-    )
-    cat_dict = {}
     categories = Category.objects.all()
-    for cat in categories:
-        cat_dict[cat] = posts.filter(category=cat).count()
-
     return {
-        'categories': cat_dict
+        'categories': categories
     }

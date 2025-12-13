@@ -1,9 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 from taggit.managers import TaggableManager
+from django.utils.text import slugify
 
 class Category(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Category'
@@ -37,8 +44,8 @@ class Post(models.Model):
     def filter(self, published_date__lte, status, category__name):
         pass
 
-    # def get_absolute_url(self):
-    #     return reverse('blog:single', kwargs={'postID':self.id})
+    def get_absolute_url(self):
+        return reverse('blog:single', kwargs={'postID':self.id})
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

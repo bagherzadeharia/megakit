@@ -1,0 +1,23 @@
+{% load static %}
+
+<div class="row justify-content-center">
+    {% for post in posts %}
+        <div class="col-lg-4 col-md-6 mb-5">
+            <div class="card bg-transparent border-0">
+                <img src="{% static 'images/blog/1.jpg' %}" alt="" class="img-fluid rounded">
+                <div class="card-body mt-2">
+                    <div class="blog-item-meta">
+                        {% if post.category.first and post.category.first.slug %}
+                            <a href="{% url 'blog:category' categoryName=post.category.first.slug %}" class="text-white-50">{{ post.category.first }}</a><span class="ml-2 mr-2 text-white-50">/</span>
+                        {% endif %}
+                        {% if post.author %}
+                            <a href="{% url 'blog:author' post.author.username %}" class="text-white-50 ml-2"><i class="fa fa-user mr-2"></i>{{ post.author.first_name }} {{ post.author.last_name }}</a>
+                        {% endif %}
+                    </div>
+                    <h3 class="mt-3 mb-5 lh-36"><a href="{% url 'blog:single' postID=post.id %}" class="text-white ">{{ post.title }}</a></h3>
+                    <a href="{% url 'blog:single' postID=post.id %}" class="btn btn-small btn-solid-border btn-round-full text-white">Learn More</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

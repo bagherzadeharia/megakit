@@ -1,6 +1,6 @@
 from django.contrib import admin
 from blog.models import Post, Category, Comment
-# from django_summernote.admin import SummernoteModelAdmin -> Add to post model later
+from django_summernote.admin import SummernoteModelAdmin
 
 class CategoryAdmin(admin.ModelAdmin):
     fields = (
@@ -11,7 +11,8 @@ class CategoryAdmin(admin.ModelAdmin):
         'name',
     )
 
-class CommentAdmin(admin.ModelAdmin):
+class CommentAdmin(SummernoteModelAdmin):
+    summernote_fields = ('message',)
     fields = (
         'name',
         'email',
@@ -32,8 +33,8 @@ class CommentAdmin(admin.ModelAdmin):
     list_filter = ('post', 'approved')
     empty_value_display = '-empty-'
 
-class PostAdmin(admin.ModelAdmin):
-    # summernote_fields = ('content',)
+class PostAdmin(SummernoteModelAdmin):
+    summernote_fields = ('content',)
     date_hierarchy = 'created_date'
     empty_value_display = '--empty--'
     fields = (
