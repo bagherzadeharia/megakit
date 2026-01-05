@@ -11,9 +11,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+DEBUG = config('DEBUG', cast=bool)
 
 # Application definition
 
@@ -32,12 +35,20 @@ INSTALLED_APPS = [
     'django_extensions',
     'blog',
     'robots',
-    'debug_toolbar',
     'taggit',
     'django_summernote',
     'captcha',
-    'accounts'
+    'accounts',
+    'decouple',
+    'compressor',
 ]
+
+if not DEBUG:
+    INSTALLED_APPS.append('psycopg')
+    # INSTALLED_APPS.append('postgresql')
+else:
+    INSTALLED_APPS.append('debug_toolbar')
+    
 
 # Robots
 ROBOTS_USE_HOST = False
@@ -60,8 +71,8 @@ SUMMERNOTE_CONFIG = {
         # Change editor size - responsive width and height
         'width': '100%',
         'height': 'auto',  # Set to auto for responsive height
-        'minHeight': '200px',  # Minimum height
-        'maxHeight': '600px',  # Maximum height to prevent it from growing too large
+        'minHeight': '800px',  # Minimum height
+        'maxHeight': '1200px',  # Maximum height to prevent it from growing too large
 
         # Toolbar customization
         # https://summernote.org/deep-dive/#custom-toolbar-popover
@@ -78,21 +89,12 @@ SUMMERNOTE_CONFIG = {
     }
 }
 
+DATABASES = {}
+
 # Multi Captcha Admin Settings
 MULTI_CAPTCHA_ADMIN = {
     'engine': 'simple-captcha',
 }
-
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
-]
 
 ROOT_URLCONF = "megakit.urls"
 
@@ -114,17 +116,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "megakit.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -143,6 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SITE_ID = 1
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
@@ -155,12 +147,22 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "/static/"
-MEDIA_URL = "media/"
+MEDIA_URL = "/media/"
+
+STATICFILES_DIRS = [BASE_DIR / "staticfiles"]
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]
+
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -168,9 +170,9 @@ MEDIA_URL = "media/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Related to 'debug_toolbar'
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
+# INTERNAL_IPS = [
+#     '127.0.0.1',
+# ]
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'

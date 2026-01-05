@@ -38,7 +38,7 @@ def services(request):
     return render(request, "website/service.html")
 
 def error_404(request):
-    return render(request, "website/error-404.html")
+    return render(request, "404.html", status=404)
 
 def error_403(request):
-    return render(request, "website/error-403.html")
+    return render(request, "403.html", status=403)

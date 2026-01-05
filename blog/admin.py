@@ -11,8 +11,7 @@ class CategoryAdmin(admin.ModelAdmin):
         'name',
     )
 
-class CommentAdmin(SummernoteModelAdmin):
-    summernote_fields = ('message',)
+class CommentAdmin(admin.ModelAdmin):
     fields = (
         'name',
         'email',
@@ -33,8 +32,7 @@ class CommentAdmin(SummernoteModelAdmin):
     list_filter = ('post', 'approved')
     empty_value_display = '-empty-'
 
-class PostAdmin(SummernoteModelAdmin):
-    summernote_fields = ('content',)
+class PostAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_date'
     empty_value_display = '--empty--'
     fields = (

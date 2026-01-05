@@ -1,9 +1,11 @@
-from django.utils import timezone
-from django.http import Http404
-from django.contrib import messages
-from django.shortcuts import get_object_or_404, render
-from blog.models import *
 from blog.forms import *
+from blog.models import *
+from django.db.models import Q
+from django.http import Http404
+from django.utils import timezone
+from django.contrib import messages
+from django.contrib.auth.decorators import *
+from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 def blog_home(request, **kwargs):
@@ -13,7 +15,7 @@ def blog_home(request, **kwargs):
             status=1
         )
     except Http404 or ValueError:
-        return render(request, "error-404.html")
+        return render(request, "404.html", status=404)
     else:
         if kwargs.get('categoryName') is not None:
             posts = posts.filter(
@@ -54,7 +56,7 @@ def blog_home(request, **kwargs):
         except PageNotAnInteger:
             posts = posts.page(1)
         except EmptyPage:
-            return render(request, "error-404.html")
+            return render(request, "404.html")
 
         context = {
             'posts': posts,
@@ -70,7 +72,7 @@ def blog_single(request, postID):
             status=1
         )
     except Http404 or ValueError:
-        return render(request, 'error-404.html')
+        return render(request, '404.html', status=404)
     else:
         previous_post = Post.objects.filter(
             published_date__lt=post.published_date,
@@ -128,18 +130,41 @@ def blog_single(request, postID):
                 }
                 return render(request, 'blog/blog-single.html', context)
             else:
-                return blog_home(request)
+                return render(request, '403.html', status=403)
 
 def blog_search(request):
     if (request.method == 'GET') and (query := request.GET.get('s')): # Used a Warlus Operator, Declaring a Variable (query) in "If" Statement and Using it in This Specific Scope
-        posts = Post.objects.filter(   
+        posts = Post.objects.filter(
             status=1,
-            published_date__lte=timezone.now(),
-            title__contains=query
+            published_date__lte=timezone.now()
+        ).filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query)
         )
         context = {
+            'query': query,
             'posts': posts
         }
         return render(request, "blog/blog-home.html", context)
     else:
         return blog_home(request)
+
+@login_required
+def blog_new_post(request):
+    if request.method == 'POST':
+        form = CreatePostForm(request.POST, request.FILES)
+        if form.is_valid():
+            temp = form.save(commit=False)
+            temp.author = request.user
+            temp.save()
+            messages.success(request, 'The new post has been created successfully.')
+            return redirect('blog:blog_home')
+        else:
+            messages.error(request, 'The new post has not been created.')
+    else:
+        form = CreatePostForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'blog/blog-create-post.html', context)

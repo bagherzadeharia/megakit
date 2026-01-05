@@ -26,10 +26,11 @@
     
     form.submit(function (e) {
         e.preventDefault();
-        form_data = $(this).serialize();
+        var $this = $(this);
+        form_data = $this.serialize();
         $.ajax({
             type: 'POST',
-            url: form.attr('action'),
+            url: $this.attr('action'),
             data: form_data
         })
         .done(done_func)

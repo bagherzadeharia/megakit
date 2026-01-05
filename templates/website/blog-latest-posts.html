@@ -4,7 +4,7 @@
     {% for post in posts %}
         <div class="col-lg-4 col-md-6 mb-5">
             <div class="card bg-transparent border-0">
-                <img src="{% static 'images/blog/1.jpg' %}" alt="" class="img-fluid rounded">
+                <img src="{{ post.image.url }}" alt="" class="img-fluid rounded">
                 <div class="card-body mt-2">
                     <div class="blog-item-meta">
                         {% if post.category.first and post.category.first.slug %}

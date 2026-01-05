@@ -29,6 +29,11 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
+				{% if query %}
+					<div class="section-title text-center">
+						<h2>Search Results for "{{ query }}"</h2>
+					</div>
+				{% endif %}
 				{% if categoryName %}
 					<div class="section-title text-center">
 						<h2>{{ categoryName }}</h2>
@@ -41,14 +46,14 @@
 				{% endif %}
 				{% if authorFirstName and authorLastName %}
 					<div class="section-title text-center">
-						<h2>{{ authorFirstName }} {{ authorLastName }}</h2>
+						<h2>Posts by: {{ authorFirstName }} {{ authorLastName }}</h2>
 					</div>
 				{% endif %}
                 <div class="row">
 					{% for post in posts %}
 						<div class="col-lg-6 col-md-6 mb-5">
 							<div class="blog-item">
-								<img src="{% static 'images/blog/1.jpg' %}" alt="" class="img-fluid rounded">
+								<img src="{{ post.image.url }}" alt="" class="img-fluid rounded">
 								<div class="blog-item-content bg-white p-4">
 									<div class="blog-item-meta  py-1 px-2">
 										<span class="text-muted text-capitalize mr-3"><i class="ti-pencil-alt mr-2"></i><a href="{% url 'blog:author' post.author.username %}">{{ post.author.first_name }} {{ post.author.last_name }}</a></span>

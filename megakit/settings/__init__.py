@@ -1,7 +1,7 @@
 import importlib.util
 from pathlib import Path
 
-# Get the parent directory (mysite/)
+# Get the parent directory (megakit/)
 parent_dir = Path(__file__).resolve().parent.parent
 
 # Import settings.py as a module

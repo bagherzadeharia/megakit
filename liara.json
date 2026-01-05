@@ -1,0 +1,26 @@
+{
+	"platform": "django",
+	"django": {
+		"pythonVersion": "3.13",
+		"collectStatic": true,
+		"compileMessages": false,
+		"modifySettings": true,
+		"timezone": "Asia/Tehran"
+		
+	},
+	"app": "travelista",
+	"port": 80,
+	"build": {
+		"location": "iran"
+	},
+	"disks": [
+		{
+			"name": "media",
+			"mountTo": "media"
+		},
+		{
+			"name": "static",
+			"mountTo": "static"
+		}
+	]
+}

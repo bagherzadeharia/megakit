@@ -15,35 +15,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-# import debug_toolbar
-# import django.contrib.auth.urls
-# import django_summernote
-# from blog.sitemaps import BlogSitemap
+from blog.sitemaps import BlogSitemap
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from django.contrib.sitemaps.views import sitemap
 from blog.sitemaps import BlogSitemap
-from megakit.view import *
 from django.contrib.sitemaps.views import sitemap
 from website.sitemaps import StaticViewSitemap
-import debug_toolbar
+import django.contrib.auth.urls
+# import debug_toolbar
+import django_summernote
+from website.sitemaps import StaticViewSitemap
 
 sitemaps = {
     'static': StaticViewSitemap,
     'blog': BlogSitemap
 }
 
-# from website.view import *
-# from websitesite.view import *
-# from website.sitemaps import StaticViewSitemap
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('website.urls')),
     path('blog/', include('blog.urls')),
-    path('__debug__/', include('debug_toolbar.urls', namespace='djdt')),
+    # path('__debug__/', include('debug_toolbar.urls', namespace='djdt')),
     path('captcha/', include('captcha.urls')), # Captcha
     path('accounts_app/', include('accounts.urls')), # The 'accounts' application
     path('accounts/', include('django.contrib.auth.urls')),

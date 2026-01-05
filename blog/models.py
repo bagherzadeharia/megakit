@@ -60,6 +60,3 @@ class Comment(models.Model):
         ordering = ['-created_date']
         verbose_name = 'Comment'
         verbose_name_plural = 'Comments'
-
-    def __str__(self):
-        return self.name + ", Subject: " + self.subject

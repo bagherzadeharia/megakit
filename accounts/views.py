@@ -12,11 +12,11 @@ def login_view(request):
     if request.method == 'POST':
         loginInfo = request.POST.get('loginInfo')
         password = request.POST.get('password')
-        if not loginInfo or not password:
-            print("Please provide both login info and password.")
-            messages.error(request, 'Please provide both login info and password.')
-            return render(request, "accounts/login.html", {'message': 'Please provide both login info and password.'})
         emailPattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        if not loginInfo or not password:
+            message = messages.error(request, 'Please provide both login info and password.')
+            return render(request, "accounts/login.html", {'message': message})
+        
         if re.match(emailPattern, loginInfo):
             try:
                 userFinder = User.objects.get(email=loginInfo)
@@ -26,18 +26,24 @@ def login_view(request):
                 user = authenticate(request, username=userFinder.username, password=password) # Authenticates the user with the email and password provided (Checking if such user exists)
                 if user is not None:
                     login(request, user)
-                    print(user)
                     return redirect('/')
                 else:
-                    print("Incorrect password")
+                    message = messages.error(request, "Incorrect Login Info")
+                    return render(request, "accounts/login.html", {'message': message})
         else:
-            user = authenticate(request, username=loginInfo, password=password)
+            user = User.objects.get(username=loginInfo)
             if user is not None:
-                login(request, user)
-                print(user)
-                return redirect('/')
+                try:
+                    authenticate(request, username=loginInfo, password=password)
+                except (ObjectDoesNotExist, ValueError):
+                    message = messages.error(request, "Incorrect Login Info")
+                    return render(request, "accounts/login.html", {'message': message})
+                else:
+                    login(request, user)
+                    return redirect('/')
             else:
-                print("Incorrect password")
+                message = messages.error(request, "Incorrect Login Info")
+                return render(request, "accounts/login.html", {'message': message})
     else:
         message = ""
         return render(request, "accounts/login.html", {'message': message})
